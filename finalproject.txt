@@ -1,0 +1,685 @@
+package com.company;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.Scanner;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.*;
+import java.sql.*;
+
+import static javafx.application.Platform.exit;
+
+class myframe7 extends JFrame implements MouseListener {
+
+
+    int sum = 0;
+   // Button b_s = new Button();
+    ///Button b_sm = new Button();
+    Button b = new Button();
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/naman1";
+
+
+
+    Scanner sc = new Scanner(System.in);
+
+    Label l_bowler = new Label();
+    Label l_firball = new Label();
+    Label l_secball = new Label();
+    Label l_thirball = new Label();
+    Label l_fouball = new Label();
+    Label l_fifball = new Label();
+    Label l_sixball = new Label();
+
+    TextField t_bowler = new TextField();
+    String[] str=new String[40];
+
+
+    TextField t_firball = new TextField();
+    TextField t_secball = new TextField();
+    TextField t_thirball = new TextField();
+    TextField t_fouball = new TextField();
+    TextField t_fifball = new TextField();
+    TextField t_sixball = new TextField();
+    JComboBox<String> cb ;//new JComboBox<String>(str);
+    myframe7()  {
+        try {
+
+            setSize(2000, 2000);
+            //setBackground(Color.yellow);
+            JPanel pan = new JPanel();
+            pan.setSize(500, 800);
+            //pan.setBackground(Color.white);
+            GridBagLayout g = new GridBagLayout();
+            GridBagConstraints gc = new GridBagConstraints();
+            setLayout(new GridBagLayout());
+            Connection conn = null;
+            Statement stmt = null;
+
+
+            try {
+
+
+                String sql = "SELECT name  FROM `cricket2`";
+                int i=0;
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DB_URL, "naman", "naman@123");
+                stmt = conn.createStatement();
+                          // String sql = null;
+                ResultSet rs = stmt.executeQuery(sql);
+                while(rs.next()){
+                    //Retrieve by column name
+                    //int age = rs.getInt("age");
+                    str[i] = rs.getString("name");
+
+                    //Display values
+                    i++;
+                }
+                //STEP 6: Clean-up environment
+                rs.close();
+                stmt.close();
+                conn.close();
+
+
+                stmt.executeUpdate(sql);
+                System.out.println("success");
+                //STEP 6: Clean-up environment
+                stmt.close();
+                conn.close();
+            } catch (Exception a) {
+                System.out.println(a);
+            }
+
+
+
+            pan.setLayout(g);
+
+            Font f1 = new Font("my font", 1, 20);
+
+
+            pan.setOpaque(false);
+            setContentPane(new JLabel( new ImageIcon("C:\\Users\\admin\\IdeaProjects\\PowerHouseGym\\cric12.jpg")));
+
+            l_bowler.setText("Bowler: ");
+            l_bowler.setFont(f1);
+
+            l_firball.setText("First ball: ");
+            l_firball.setFont(f1);
+
+            l_secball.setText("Second ball: ");
+            l_secball.setFont(f1);
+
+            l_thirball.setText("third ball: ");
+            l_thirball.setFont(f1);
+
+            l_fouball.setText("Fourth ball: ");
+            l_fouball.setFont(f1);
+
+            l_fifball.setText("Fifth ball: ");
+            l_fifball.setFont(f1);
+
+            l_sixball.setText("Sixth ball: ");
+            l_sixball.setFont(f1);
+
+
+            Insets i = new Insets(0, 20, 10, 20);
+            gc.insets = i;
+            gc.gridx = 0;
+            gc.gridy = 0;
+            pan.add(l_bowler, gc);
+
+            gc.gridy = 1;
+            pan.add(l_firball, gc);
+
+            gc.gridy = 2;
+            pan.add(l_secball, gc);
+
+            gc.gridy = 3;
+            pan.add(l_thirball, gc);
+
+            gc.gridy = 4;
+            pan.add(l_fouball, gc);
+
+            gc.gridy = 5;
+            pan.add(l_fifball, gc);
+
+            gc.gridy = 6;
+            pan.add(l_sixball, gc);
+
+
+//            File f = new File("naman1.txt");
+  //          FileOutputStream fos = new FileOutputStream(f);
+    /*        String[] s = new String[12];
+
+            for (int k = 1; k < 10; k++) {
+                s[k] = sc.nextLine();
+                fos.write(s[k].getBytes());
+                fos.write('\n');
+
+            }
+
+
+            fos.close();
+            String[] str = new String[20];
+            BufferedReader br = new BufferedReader(new FileReader("naman1.txt"));
+            StringBuilder sb = new StringBuilder();
+            try {
+                String line = br.readLine();
+                int p = 0;
+                while (line != null) {
+                    sb.append(line);
+                    str[p++] = line;
+                    sb.append(System.lineSeparator());
+                    line = br.readLine();
+
+                }
+                String everything = sb.toString();
+            } finally {
+                br.close();
+            }*/
+            // gc.gridy=0;
+            gc.gridx = 1;
+            gc.ipadx = 100;
+            gc.gridy = 0;
+            //pan.add(t_bowler,gc);
+            cb = new JComboBox<String>(str);
+
+
+            pan.add(cb, gc);
+            gc.gridy = 1;
+            pan.add(t_firball, gc);
+
+            gc.gridy = 2;
+            pan.add(t_secball, gc);
+
+            gc.gridy = 3;
+            pan.add(t_thirball, gc);
+
+            gc.gridy = 4;
+            pan.add(t_fouball, gc);
+
+            gc.gridy = 5;
+            pan.add(t_fifball, gc);
+
+
+
+            gc.gridy = 6;
+            pan.add(t_sixball, gc);
+            b.addMouseListener(this);
+            b.setLabel("add");
+            gc.gridx = 1;
+            gc.gridy = 7;
+            pan.add(b, gc);
+            add(pan);
+            setVisible(true);
+        }catch(Exception e)
+        {
+            System.out.print(e);
+        }
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        b.setBackground(Color.green);
+        int[] j=new int[10];
+        j[0]= Integer.parseInt(t_firball.getText());
+        j[1]= Integer.parseInt(t_secball.getText());
+        j[2]= Integer.parseInt(t_thirball.getText());
+        j[3]= Integer.parseInt(t_fouball.getText());
+        j[4]= Integer.parseInt(t_fifball.getText());
+        j[5]= Integer.parseInt(t_sixball.getText());
+        for(int o=0;o<6;o++)
+        {
+            if(j[0]<6) {
+                sum = sum + j[o];
+            }
+            else
+                break;
+        }
+        String str1;
+        System.out.println("runs scored in an over of");
+        str1= (String) cb.getSelectedItem();
+        System.out.println(str1);
+       // System.out.println(cb.getSelectedIndex());
+
+        //String str1= (String) cb.get;
+      //  System.out.print(str1);
+        System.out.print("is");
+        System.out.print(sum);
+
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+}
+
+class myframe8 extends JFrame implements MouseListener,ActionListener {
+    // Button b_at=new Button();
+    Button b_at = new Button();
+    Button b_e = new Button();
+    // b_at.setLabel("ADDTEAM");
+    Label l_team = new Label();
+    Label l_name = new Label();
+    Label l_age = new Label();
+    Label l_type = new Label();
+
+
+    TextField t_team = new TextField();
+    TextField t_name = new TextField();
+    TextField t_age = new TextField();
+    TextField t_type = new TextField();
+
+
+    myframe8() {
+       setSize(2000, 2000);
+        JPanel pan1 = new JPanel();
+        pan1.setSize(1500, 800);
+        //pan1.setBackground(Color.WHITE);
+        GridBagLayout g = new GridBagLayout();
+        GridBagConstraints gc = new GridBagConstraints();
+        pan1.setLayout(g);
+        Font f1 = new Font("my font", 1, 20);
+
+        pan1.setOpaque(false);
+        setContentPane(new JLabel( new ImageIcon("C:\\Users\\admin\\IdeaProjects\\PowerHouseGym\\cric11.jpg")));
+
+        l_team.setText("TEAM NAME ");
+        l_team.setFont(f1);
+
+        l_name.setText("NAME OF PLAYER: ");
+        l_name.setFont(f1);
+
+        l_age.setText("AGE: ");
+        l_age.setFont(f1);
+
+        l_type.setText("TYPE: ");
+        l_type.setFont(f1);
+        Insets i = new Insets(0, 20, 10, 40);
+        gc.insets = i;
+        gc.gridx = 0;
+        gc.gridy = 0;
+        pan1.add(l_team, gc);
+
+        gc.gridy = 1;
+        pan1.add(l_name, gc);
+
+        gc.gridy = 2;
+        pan1.add(l_age, gc);
+
+        gc.gridy = 3;
+        pan1.add(l_type, gc);
+
+        gc.ipadx = 100;
+        gc.gridx = 1;
+
+        String[] str2 = new String[10];
+        str2[0] = "INDIA";
+        str2[1] = "AUSTRILA";
+        str2[2] = "PAKISTAN";
+        str2[3] = "NEW-ZELAND";
+        JComboBox<String> cb = new JComboBox<String>(str2);
+        gc.gridy = 0;
+        pan1.add(cb, gc);
+
+        gc.gridy = 1;
+        pan1.add(t_name, gc);
+
+        gc.gridy = 2;
+        pan1.add(t_age, gc);
+
+        gc.gridy = 3;
+        String[] str3 = new String[10];
+
+        str3[0] = "BOWLER";
+        str3[1] = "BATS-MAN";
+        str3[2] = "BOWLING-ALLROUNDER";
+        str3[3] = "BATTING-ALLROUNDER";
+        str3[4] = "WICKET-KEEPER BATSMAN";
+        JComboBox<String> cb1 = new JComboBox<String>(str3);
+        pan1.add(cb1, gc);
+//        gc.anchor=gc.CENTEr
+        gc.gridx = 1;
+        gc.gridy = 4;
+        pan1.add(b_at, gc);
+        gc.gridy = 6;
+        pan1.add(b_e, gc);
+
+        add(pan1);
+        b_at.setLabel("ADD");
+        b_e.setLabel("exit");
+        b_at.addMouseListener(this);
+        b_e.addMouseListener(this);
+        setVisible(true);
+    }
+
+
+
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/naman1";
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        b_at.setBackground(Color.red);
+
+        Connection conn = null;
+        Statement stmt = null;
+//        myframe.details();
+        try {
+
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, "naman", "naman@123");
+            stmt = conn.createStatement();
+
+
+            String sql = "INSERT INTO `cricket2`(`name`,`age`)VALUES('" + t_name.getText() + "', '" + t_age.getText() + "');";
+            stmt.executeUpdate(sql);
+            System.out.println("success");
+            //STEP 6: Clean-up environment
+            stmt.close();
+            conn.close();
+        } catch (Exception a) {
+            System.out.println(a);
+        }
+
+        Button b = (Button) e.getSource();
+
+        System.out.println(b.getName());
+        System.out.println(b.getLabel());
+
+        if(b.getLabel()=="ADD") {
+            this.setVisible(false);
+            new myframe8().setVisible(true);
+        }
+        else if (b.getLabel()=="exit"){
+            try {
+                this.setVisible(false);
+                myframe9 myframe1 = new myframe9();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+
+        }
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+
+    }
+}
+
+
+class myframe9 extends JFrame implements MouseListener, ActionListener{
+
+        Button b_s=new Button();
+        Button b_sm=new Button();
+
+        myframe9() throws IOException {
+        //Button b_s=new Button();
+        //Button b_sm=new Button();
+      //  final JFrame myJFrame = new JFrame("Tax2 Program");
+        //final Container cp = myJFrame.getContentPane();
+        b_s.setLabel("SET");
+        b_sm.setLabel("START MATCH");
+        b_s.setActionCommand("NAMAN");
+        b_sm.setActionCommand("NAMA");
+        Label l_fb=new Label();
+        Label l_sb=new Label();
+        Label l_no=new Label();
+
+        TextField t_fb=new TextField();
+        TextField t_sb=new TextField();
+        TextField t_nb=new TextField();
+        setSize(2000,2000);
+        JPanel pan2=new JPanel();
+
+
+        //BufferedImage image;
+        //image = ImageIO.read(new File("C:\\Users\\admin\\IdeaProjects\\PowerHouseGym\\cric2.jpg"));
+
+
+
+
+        pan2.setSize(1500,800);
+        //pan2.setBackground(Color.WHITE);
+
+        GridBagLayout g=new GridBagLayout();
+        GridBagConstraints gc=new GridBagConstraints();
+        pan2.setLayout(g);
+        Font f1=new Font("my font",1,20);
+            pan2.setOpaque(false);
+            gc.gridy=0;
+            gc.gridx=1;
+            setContentPane(new JLabel( new ImageIcon("C:\\Users\\admin\\IdeaProjects\\PowerHouseGym\\cric6.jpg")));
+           // JLabel lb1= new JLabel(i1);
+           // JScrollPane jsp = new JScrollPane(lb1);
+         //   lb1.setVisible(true);
+           // lb1.setLayout(null);
+
+
+
+
+
+            l_fb.setText("FIRST BATTING ");
+        l_fb.setFont(f1);
+
+        l_sb.setText("SECOND BATTING ");
+        l_sb.setFont(f1);
+
+        l_no.setText("NUMBER-OF-OVERS ");
+        l_no.setFont(f1);
+
+        Insets i=new Insets(0,20,10,40);
+        gc.insets=i;
+        gc.gridx=0;
+        gc.gridy=0;
+           // pan2.add(lb1,gc);
+        pan2.add(l_fb,gc);
+
+        gc.gridy=1;
+        pan2.add(l_sb,gc);
+
+        gc.gridy=2;
+        pan2.add(l_no,gc);
+
+
+        gc.ipadx=100;
+        gc.gridx=1;
+
+        String[] str2=new String[10];
+        str2[0]="INDIA";
+        str2[1]="AUSTRILA";
+        str2[2]="PAKISTAN";
+        str2[3]="NEW-ZELAND";
+        JComboBox<String> cb=new JComboBox<String>(str2);
+        JComboBox<String> cb1=new JComboBox<String>(str2);
+            gc.gridx=1;
+            gc.gridy=0;
+            pan2.add(cb,gc);
+
+        gc.gridy=1;
+        pan2.add(cb1,gc);
+
+        String[] n=new String[5];
+        n[0]="5";
+        JComboBox<String> cb2=new JComboBox<String>(n);
+       // t_nb.setText("5");
+        gc.gridy=2;
+        pan2.add(cb2,gc);
+
+        gc.gridy=3;
+        pan2.add(b_sm,gc);
+
+        gc.gridy=0;
+        gc.gridx=3;
+        pan2.add(b_s,gc);
+
+
+        b_sm.addMouseListener(this);
+        b_s.addMouseListener(this);
+        //cp.add(pan2);
+        //cp.removeAll();
+            //JFrame fm2= new JFrame();
+        add(pan2);
+        setVisible(true);
+
+/*            ImageIcon i1 = new ImageIcon("C:\\Users\\admin\\IdeaProjects\\PowerHouseGym\\cric2.jpg");
+            JLabel lb1= new JLabel(i1);
+            JScrollPane jsp = new JScrollPane(lb1);
+            lb1.setVisible(true);
+            lb1.setLayout(null);
+            gc.gridy=0;
+            gc.gridx=1;
+            pan2.add(lb1,gc);*/
+
+            //   lb1.setBounds(0,0,12500,7000);
+            //pan2.add(lb1);
+            //.add(jsp);
+            pan2.setVisible(true);
+
+
+        }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+     //   b_s.setBackground(Color.red);
+
+
+//        System.out.println(e.getID());
+//        System.out.println(e.getButton());
+        System.out.println();
+        Button b = (Button) e.getSource();
+        ;
+        System.out.println(b.getName());
+        System.out.println(b.getLabel());
+
+        if(b.getLabel()=="SET") {
+            myframe8 myframe1 = new myframe8();
+        }
+        else if (b.getLabel()=="START MATCH"){
+            myframe7 myframe0 = new myframe7();
+
+        }
+        /*    {
+            try {
+                ui1();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }*/
+
+    }
+
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        b_sm.setBackground(Color.blue);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+public class project1 {
+   // static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    ////static final String DB_URL = "jdbc:mysql://localhost/naman1";
+
+    public static void main(String arg[]) throws IOException {
+        Connection conn = null;
+        Statement stmt = null;
+//      /*  myframe.details();
+  /*      try{
+
+        Class.forName(JDBC_DRIVER);
+        System.out.println("Connecting to database...");
+        conn = DriverManager.getConnection(DB_URL,"naman","naman@123");
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM college";
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                //Retrieve by column name
+                int age = rs.getInt("age");
+                String name = rs.getString("nama");
+
+                //Display values
+                System.out.print(", Age: " + age);
+                System.out.println(", Name: " + name);
+            }
+            //STEP 6: Clean-up environment
+            rs.close();
+            stmt.close();
+            conn.close();
+*/
+
+            myframe9 myframe2=new myframe9();
+        }
+        //catch (Exception e){
+//            System.out.println(e.fillInStackTrace());
+
+
+        }
+
+
